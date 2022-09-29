@@ -22,22 +22,25 @@ void sort_dir_files(files *data[], int n);
 int count_dir_files(char *file_path);
 char *get_file_size(size_t size);
 
+/* count files */
 int file_count = 0;
+/* count folders */
 int directory_count = 0;
 
 int main() {
-    struct dirent *dentry;
-    struct stat st;
-    DIR *dirp;
-    dirp = opendir(".");
     char *base_print = (char *)malloc(sizeof(1));
     base_print[0] = 0;
+
+    DIR *dirp;
+    dirp = opendir(".");
+
     printf(".\n");
     solution(".", base_print);
-    stat("./main.c", &st);
+    printf("\n%d directories, %d files\n", directory_count, file_count);
     return 0;
 }
 
+/* sort directory files by name */
 void sort_dir_files(files *data[], int n) {
     int step, i;
     files *p_temp_str;
@@ -52,6 +55,7 @@ void sort_dir_files(files *data[], int n) {
     }
 }
 
+/* print file data */
 void custom_print(char *base_print, char *file_path, char *file_name,
                   int flag) {
     struct stat st;
@@ -88,14 +92,18 @@ void solution(char *file_path, char *base_print) {
             strcpy(temp, "│   ");
         }
         if (data[i]->is_directory) {
+            directory_count++;
             char *new_base_print =
                 malloc(strlen(base_print) + strlen(temp) + 1);
             sprintf(new_base_print, "%s%s", base_print, temp);
             solution(path, new_base_print);
+        } else {
+            file_count++;
         }
     }
 }
 
+/* get all file names exclude <./> <../> <hide files> */
 void *get_dir_files(char *file_path, files *data[], int count_file) {
     struct dirent *dentry;
     DIR *dirp = NULL;
@@ -124,6 +132,7 @@ void *get_dir_files(char *file_path, files *data[], int count_file) {
     closedir(dirp);
 }
 
+/* count how many files in directory exclude <./> <../> <hide files> */
 int count_dir_files(char *file_path) {
     struct dirent *dentry;
     DIR *dirp = NULL;
@@ -142,6 +151,7 @@ int count_dir_files(char *file_path) {
     return count;
 }
 
+/* get permission information using st_mode of stat */
 char *get_permission_by_stmode(unsigned int st_mode) {
     char *result = (char *)malloc(sizeof(char) * 11);
     result[0] = 0;
@@ -159,6 +169,7 @@ char *get_permission_by_stmode(unsigned int st_mode) {
     return result;
 }
 
+/* get file size using st_size of stat */
 char *get_file_size(size_t size) {
     static const char *SIZES[] = {"", "K", "M", "G"};
     size_t div = 0;
