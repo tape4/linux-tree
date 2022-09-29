@@ -1,5 +1,6 @@
-# linux-tree
-시스템프로그래밍(2-2) 과제 레포입니다.
+# linux-tree  
+## Homework 1 - Tree 명령어 구현
+2019203032 이정훈  
 
 ```
 make
