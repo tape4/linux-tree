@@ -15,7 +15,7 @@ typedef struct file_name_type {
 } files;
 
 void custom_print(char *base_print, char *file_path, char *file_name, int flag);
-void *get_dir_files(char *file_path, files *data[], int count_file);
+void get_dir_files(char *file_path, files *data[], int count_file);
 char *get_permission_by_stmode(unsigned int st_mode);
 void solution(char *file_path, char *base_print);
 void sort_dir_files(files *data[], int n);
@@ -104,14 +104,14 @@ void solution(char *file_path, char *base_print) {
 }
 
 /* get all file names exclude <./> <../> <hide files> */
-void *get_dir_files(char *file_path, files *data[], int count_file) {
+void get_dir_files(char *file_path, files *data[], int count_file) {
     struct dirent *dentry;
     DIR *dirp = NULL;
     int index = 0;
     if (!file_path)
-        return NULL;
+        return;
     if ((dirp = opendir(file_path)) == NULL)
-        return NULL;
+        return;
     while ((dentry = readdir(dirp))) {
         if (strcmp(dentry->d_name, ".") == 0 ||
             strcmp(dentry->d_name, "..") == 0 || (dentry->d_name)[0] == '.')
